@@ -58,7 +58,7 @@ class AppControl extends React.Component {
       currentlyVisibleState = <Store itemList={tempMasterItemList}/>;
       buttonText = "Change to Restock Page";
     } else if (this.state.pageName === "Restock") {
-      currentlyVisibleState = <Restock />;
+      currentlyVisibleState = <Restock itemList={tempMasterItemList}/>;
       buttonText = "Change to Store Page";
     } else {
       currentlyVisibleState = <h2>I am Broken</h2>;
@@ -66,8 +66,9 @@ class AppControl extends React.Component {
     }
     return(
       <React.Fragment>
-        {currentlyVisibleState}
         <button onClick={this.switchView}>{buttonText}</button>
+        {/* ^^^ button missing if second on restock page*/}
+        {currentlyVisibleState}
       </React.Fragment>
     )
   }
