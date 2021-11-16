@@ -7,7 +7,12 @@ function Restock(props) {
   const columnCount = 2;
   const rowCount = Math.ceil(props.itemList.length / columnCount);
   const cellSpacing = "1fr ";
-  const gridStyle = {
+  const gridTwoOneStyle = {
+    display: "grid",
+    gridTemplateColumns: (cellSpacing.repeat(2)),
+    gridTemplateRows: (cellSpacing.repeat(1))
+  }
+  const itemGridStyle = {
     display: "grid",
     gridTemplateColumns: (cellSpacing.repeat(columnCount)),
     gridTemplateRows: (cellSpacing.repeat(rowCount))
@@ -21,20 +26,20 @@ function Restock(props) {
   return (
     <React.Fragment>
       <h2>Restock Page</h2>
-      <div style={gridStyle}>
-        <div style={gridStyle}>
+      <div style={gridTwoOneStyle}>
+        <div style={itemGridStyle}>
           {props.itemList.map((item, index) =>
             <div style={itemBoxStyle}>
               <Item itemName={item.itemName}
                 description={item.description}
                 price={item.price}
                 stock={item.stock}
-                key={index} />
+                key={item.id} />
             </div>
           )}
         </div>
         <div style={itemBoxStyle}>
-          <Form />
+          <Form onNewItemCreation={props.formFunction} />
         </div>
       </div>
     </React.Fragment>
@@ -42,7 +47,8 @@ function Restock(props) {
 }
 
 Restock.propTypes = {
-  itemList: PropTypes.array
+  itemList: PropTypes.array,
+  formFunction: PropTypes.func
 }
 
 export default Restock;

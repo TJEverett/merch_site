@@ -27,7 +27,7 @@ function Store(props){
             description={item.description}
             price={item.price}
             stock={item.stock}
-            key={index} />
+            key={item.id} />
           </div>
         )}
       </div>

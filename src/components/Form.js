@@ -1,13 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { v4 } from "uuid";
 
-function Form() {
+function Form(props) {
 
   function handleNewItemSubmit(event) {
     event.preventDefault();
-    console.log(event.target.itemName.value);
-    console.log(event.target.description.value);
-    console.log(event.target.price.value);
-    console.log(event.target.stock.value);
+    props.onNewItemCreation({itemName: event.target.itemName.value, description: event.target.description.value, price: event.target.price.value, stock: event.target.stock.value, id: v4()});
   }
 
   return (
@@ -36,6 +35,10 @@ function Form() {
       </form>
     </React.Fragment>
   );
+}
+
+Form.propTypes = {
+  onNewItemCreation: PropTypes.func
 }
 
 export default Form;
