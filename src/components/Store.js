@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Item from "./Item";
+import CustomButton from "./CustomButton";
 
 function Store(props){
   const columnCount = 3;
@@ -21,13 +22,14 @@ function Store(props){
     <React.Fragment>
       <h2>Store Page</h2>
       <div style={gridStyle}>
-        {props.itemList.map((item, index) =>
-          <div style={itemBoxStyle}>
+        {props.itemList.map((item) =>
+          <div style={itemBoxStyle} key={item.id}>
             <Item itemName={item.itemName}
-            description={item.description}
             price={item.price}
-            stock={item.stock}
             key={item.id} />
+            <CustomButton whenClicked={() => props.itemSelect(item.id)}
+            disabledState={false}
+            buttonText="View Details" />
           </div>
         )}
       </div>
@@ -36,7 +38,8 @@ function Store(props){
 }
 
 Store.propTypes = {
-  itemList: PropTypes.array
+  itemList: PropTypes.array,
+  itemSelect: PropTypes.func
 }
 
 export default Store;

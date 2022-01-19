@@ -1,6 +1,8 @@
 import React from "react";
 import Store from "./Store";
+import Details from "./Details";
 import Restock from "./Restock";
+import CustomButton from "./CustomButton";
 
 class AppControl extends React.Component {
 
@@ -8,7 +10,8 @@ class AppControl extends React.Component {
     super(props);
     this.state = {
       pageName: "Store",
-      masterItemList: []
+      masterItemList: [],
+      selectedItem: null
     };
   }
 
@@ -19,9 +22,20 @@ class AppControl extends React.Component {
     } else {
       newValue = "Restock";
     }
-    this.setState(prevState => ({
-      pageName: newValue
-    }));
+    this.setState({pageName: newValue});
+  }
+
+  viewDescend = (id) => {
+    const selectedItem = this.state.masterItemList.filter(item => item.id === id)[0];
+    this.setState({
+      selectedItem: selectedItem
+    });
+  }
+
+  viewAscend = () => {
+    this.setState({
+      selectedItem: null
+    });
   }
 
   handleAddingItemToList = (newItem) => {
@@ -32,22 +46,45 @@ class AppControl extends React.Component {
     });
   }
 
+  decrementItemStock = (amountToDecrement, itemId) => {
+    let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
+    const currentPosition = tempMasterItemList.findIndex(item => item.id === itemId);
+    if(currentPosition === -1){
+      console.log("ERROR: AppControl-decrementItemStock: Id not in masterItemList");
+    }else{
+      let currentItem = tempMasterItemList[currentPosition];
+      if(currentItem.stock < amountToDecrement){
+        console.log("ERROR: AppControl-decrementItemStock: Not enough stock for " + currentItem.itemName);
+      }else{
+        currentItem.stock = currentItem.stock - amountToDecrement;
+        tempMasterItemList[currentPosition] = currentItem;
+        this.setState({
+          selectedItem: currentItem,
+          masterItemList: tempMasterItemList
+        });
+      }
+    }
+  }
+
   render(){
     let currentlyVisibleState = null;
-    let buttonText = null;
+    let currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
     if(this.state.pageName === "Store"){
-      currentlyVisibleState = <Store itemList={this.state.masterItemList}/>;
-      buttonText = "Change to Restock Page";
+      if(this.state.selectedItem === null) {
+        currentlyVisibleState = <Store itemList={this.state.masterItemList} itemSelect={this.viewDescend}/>;
+        currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Restock Page"/>;
+      } else {
+        currentlyVisibleState = <Details item={this.state.selectedItem} buttonOrder={this.decrementItemStock}/>;
+        currentlyVisibleButton = <CustomButton whenClicked={this.viewAscend} disabledState={false} buttonText="Change to Store Page" />;
+      }
     } else if (this.state.pageName === "Restock") {
       currentlyVisibleState = <Restock itemList={this.state.masterItemList} formFunction={this.handleAddingItemToList}/>;
-      buttonText = "Change to Store Page";
     } else {
       currentlyVisibleState = <h2>I am Broken</h2>;
-      buttonText = "Change to Store Page";
     }
     return(
       <React.Fragment>
-        <button onClick={this.switchView}>{buttonText}</button>
+        {currentlyVisibleButton}
         {currentlyVisibleState}
       </React.Fragment>
     )
