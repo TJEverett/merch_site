@@ -6,38 +6,60 @@ function Form(props) {
 
   function handleNewItemSubmit(event) {
     event.preventDefault();
-    props.onNewItemCreation({itemName: event.target.itemName.value, description: event.target.description.value, price: event.target.price.value, stock: event.target.stock.value, id: v4()});
+    props.onNewItemCreation({itemName: event.target.itemName.value, description: event.target.description.value, price: parseInt(event.target.price.value), stock: parseInt(event.target.stock.value), id: (props.id || v4())});
   }
 
   return (
     <React.Fragment>
       <form onSubmit={handleNewItemSubmit}>
+        <p>Book Name:</p>
         <input
           type="text"
+          required
           name="itemName"
-          placeholder="Book Name" />
+          placeholder="Book Name"
+          defaultValue={props.itemName || ""} />
         <br/>
+        <p>Description: Series, Book #, Format</p>
         <textarea
           name="description"
-          placeholder="Series, Book #, format" />
-        <br />
+          required
+          placeholder="Series, Book #, Format"
+          defaultValue={props.description || ""} />
+        <br/>
+        <p>Price:</p>
         <input
           type="number"
           name="price"
-          placeholder="$$$" />
-        <br />
+          min={0}
+          step={1}
+          required
+          placeholder="$$$"
+          defaultValue={props.price || ""} />
+        <br/>
+        <p>Amount in Stock:</p>
         <input
           type="number"
           name="stock"
-          placeholder="###" />
+          min={0}
+          step={1}
+          required
+          placeholder="###"
+          defaultValue={props.stock || ""} />
         <br />
-        <button type="submit">Add New Item</button>
+        <button type="submit">{props.submitText}</button>
       </form>
     </React.Fragment>
   );
 }
 
 Form.propTypes = {
+  itemName: PropTypes.string,
+  description: PropTypes.string,
+  price: PropTypes.number,
+  stock: PropTypes.number,
+  id: PropTypes.string,
+  submitText: PropTypes.string,
   onNewItemCreation: PropTypes.func
 }
 

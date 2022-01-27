@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Item from "./Item";
 import Form from "./Form";
+import CustomButton from "./CustomButton";
 
 function Restock(props) {
   const columnCount = 2;
@@ -11,7 +12,7 @@ function Restock(props) {
     display: "grid",
     gridTemplateColumns: (cellSpacing.repeat(2)),
     gridTemplateRows: (cellSpacing.repeat(1))
-  }
+  };
   const itemGridStyle = {
     display: "grid",
     gridTemplateColumns: (cellSpacing.repeat(columnCount)),
@@ -22,24 +23,26 @@ function Restock(props) {
     borderRadius: "45px",
     padding: "20px",
     border: "5px solid goldenRod"
-  }
+  };
   return (
     <React.Fragment>
       <h2>Restock Page</h2>
       <div style={gridTwoOneStyle}>
         <div style={itemGridStyle}>
-          {props.itemList.map((item, index) =>
-            <div style={itemBoxStyle}>
+          {props.itemList.map((item) =>
+            <div style={itemBoxStyle} key={item.id}>
               <Item itemName={item.itemName}
-                description={item.description}
                 price={item.price}
-                stock={item.stock}
-                key={item.id} />
+                stock={item.stock} />
+              <CustomButton whenClicked={() => props.itemSelect(item.id)}
+                disabledState={false}
+                buttonText="Edit Details" />
             </div>
           )}
         </div>
         <div style={itemBoxStyle}>
-          <Form onNewItemCreation={props.formFunction} />
+          <Form onNewItemCreation={props.formFunction}
+            submitText="Add New Item"  />
         </div>
       </div>
     </React.Fragment>
@@ -48,7 +51,8 @@ function Restock(props) {
 
 Restock.propTypes = {
   itemList: PropTypes.array,
-  formFunction: PropTypes.func
+  formFunction: PropTypes.func,
+  itemSelect: PropTypes.func
 }
 
 export default Restock;

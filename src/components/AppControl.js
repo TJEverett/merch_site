@@ -2,6 +2,7 @@ import React from "react";
 import Store from "./Store";
 import Details from "./Details";
 import Restock from "./Restock";
+import Edit from "./Edit";
 import CustomButton from "./CustomButton";
 
 class AppControl extends React.Component {
@@ -46,6 +47,21 @@ class AppControl extends React.Component {
     });
   }
 
+  handleEditingItemInList = (updatedItem) => {
+    let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
+    const currentPosition = tempMasterItemList.findIndex(item => item.id === updatedItem.id);
+    if(currentPosition === -1){
+      console.log("ERROR: AppControl-handleEditingItemInList: Item's Id not in masterItemList");
+    }else{
+      let currentItem = updatedItem;
+      tempMasterItemList[currentPosition] = currentItem;
+      this.setState({
+        selectedItem: currentItem,
+        masterItemList: tempMasterItemList
+      });
+    }
+  }
+
   decrementItemStock = (amountToDecrement, itemId) => {
     let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
     const currentPosition = tempMasterItemList.findIndex(item => item.id === itemId);
@@ -68,7 +84,7 @@ class AppControl extends React.Component {
 
   render(){
     let currentlyVisibleState = null;
-    let currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
+    let currentlyVisibleButton = null;
     if(this.state.pageName === "Store"){
       if(this.state.selectedItem === null) {
         currentlyVisibleState = <Store itemList={this.state.masterItemList} itemSelect={this.viewDescend}/>;
@@ -78,9 +94,16 @@ class AppControl extends React.Component {
         currentlyVisibleButton = <CustomButton whenClicked={this.viewAscend} disabledState={false} buttonText="Change to Store Page" />;
       }
     } else if (this.state.pageName === "Restock") {
-      currentlyVisibleState = <Restock itemList={this.state.masterItemList} formFunction={this.handleAddingItemToList}/>;
+      if(this.state.selectedItem === null){
+        currentlyVisibleState = <Restock itemList={this.state.masterItemList} formFunction={this.handleAddingItemToList} itemSelect={this.viewDescend}/>;
+        currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
+      } else {
+        currentlyVisibleState = <Edit item={this.state.selectedItem} editFunction={this.handleEditingItemInList} />;
+        currentlyVisibleButton = <CustomButton whenClicked={this.viewAscend} disabledState={false} buttonText="Change to Restock Page" />;
+      }
     } else {
       currentlyVisibleState = <h2>I am Broken</h2>;
+      currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
     }
     return(
       <React.Fragment>

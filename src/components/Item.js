@@ -10,8 +10,8 @@ function Item(props){
     <React.Fragment>
       <p><strong>{props.itemName}</strong></p>
       <p>{props.description}</p>
-      <p>{stockText}</p>
       <p>Price: {props.price}</p>
+      <p>{stockText}</p>
     </React.Fragment>
   );
 }
