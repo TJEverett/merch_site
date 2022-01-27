@@ -62,6 +62,14 @@ class AppControl extends React.Component {
     }
   }
 
+  handleDeletingItemFromList = (itemId) => {
+    const newList = this.state.masterItemList.filter(item => item.id !== itemId);
+    this.setState({
+      masterItemList: newList,
+      selectedItem: null
+    })
+  }
+
   decrementItemStock = (amountToDecrement, itemId) => {
     let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
     const currentPosition = tempMasterItemList.findIndex(item => item.id === itemId);
@@ -98,7 +106,7 @@ class AppControl extends React.Component {
         currentlyVisibleState = <Restock itemList={this.state.masterItemList} formFunction={this.handleAddingItemToList} itemSelect={this.viewDescend}/>;
         currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
       } else {
-        currentlyVisibleState = <Edit item={this.state.selectedItem} editFunction={this.handleEditingItemInList} />;
+        currentlyVisibleState = <Edit item={this.state.selectedItem} editFunction={this.handleEditingItemInList} deleteFunction={this.handleDeletingItemFromList} />;
         currentlyVisibleButton = <CustomButton whenClicked={this.viewAscend} disabledState={false} buttonText="Change to Restock Page" />;
       }
     } else {

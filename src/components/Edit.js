@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Item from "./Item";
 import Form from "./Form";
+import CustomButton from "./CustomButton";
 
 function Edit(props) {
   const cellSpacing = "1fr ";
@@ -26,6 +27,9 @@ function Edit(props) {
             description={props.item.description}
             price={props.item.price}
             stock={props.item.stock}/>
+          <CustomButton whenClicked={() => props.deleteFunction(props.item.id)}
+            disabledState={false}
+            buttonText="Delete Item" />
         </div>
         <div style={itemBoxStyle}>
           <Form itemName={props.item.itemName}
@@ -43,6 +47,7 @@ function Edit(props) {
 
 Edit.propTypes = {
   item: PropTypes.object,
+  deleteFunction: PropTypes.func,
   editFunction: PropTypes.func
 }
 
