@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Merch Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### _Run a fictional Book shop, 03/31/2022_
 
-## Available Scripts
+#### By _**Tristen Everett**_
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+This project was to gain practice in building full CRUD functionality within a React page, while meeting criteria of user stories. In this project, I built a page that loads a merchandise store that is designed to sell books. It allows an "employee" to add a book into the shop's inventory with a starting price and stock; it will then show up in the store side of the page and allow a "customer" to look into a specific book's details and buy a copy if they want. The [user stories](#basic-user-stories) that were used are included below, along with a [diagram](#diagram) of the React components.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Basic User Stories
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* Create, Read, Update and Delete items in the store. Items should have fields for name, description, and quantity (along with any other fields you wish to add).
+* Increase or decrease the quantity of an item in the store. For instance, if a user clicks "Buy", the quantity will decrease by one. If a user clicks "Restock", it will increment by a specified number.
+* When the quantity of an item is reduced to 0, the item should say "Out of Stock". A user should not be able to reduce the quantity of an item below 0.
 
-### `npm test`
+### Diagram
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* [MerchSite PDF](./MerchSite.pdf)
 
-### `npm run build`
+## Setup/Installation Requirements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone this Repo
+2. Run `npm install` from within the root directory of the cloned project
+3. Run `npm start` from within the root directory of the cloned project
+4. The webpage should start automatically in your default browser. If it doesn't go to http://localhost:3000 in your preferred browser
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* [Create React App](https://github.com/facebook/create-react-app)
 
-### `npm run eject`
+### License
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This software is licensed under the MIT license
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Copyright (c) 2022 **_Tristen Everett_**
