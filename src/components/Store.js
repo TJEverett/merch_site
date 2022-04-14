@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 
 function Store(props){
   const columnCount = 3;
-  const rowCount = Math.ceil(props.itemList.length / columnCount);
+  const rowCount = Math.ceil(Object.keys(props.itemList).length / columnCount);
   const cellSpacing = "1fr ";
   const gridStyle = {
     display: "grid",
@@ -22,7 +22,7 @@ function Store(props){
     <React.Fragment>
       <h2>Store Page</h2>
       <div style={gridStyle}>
-        {props.itemList.map((item) =>
+        {Object.values(props.itemList).map((item) =>
           <div style={itemBoxStyle} key={item.id}>
             <Item itemName={item.itemName}
             price={item.price}
@@ -38,7 +38,7 @@ function Store(props){
 }
 
 Store.propTypes = {
-  itemList: PropTypes.array,
+  itemList: PropTypes.object,
   itemSelect: PropTypes.func
 }
 

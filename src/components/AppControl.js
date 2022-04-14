@@ -4,6 +4,8 @@ import Details from "./Details";
 import Restock from "./Restock";
 import Edit from "./Edit";
 import CustomButton from "./CustomButton";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 class AppControl extends React.Component {
 
@@ -11,7 +13,6 @@ class AppControl extends React.Component {
     super(props);
     this.state = {
       pageName: "Store",
-      masterItemList: [],
       selectedItem: null
     };
   }
@@ -27,7 +28,7 @@ class AppControl extends React.Component {
   }
 
   viewDescend = (id) => {
-    const selectedItem = this.state.masterItemList.filter(item => item.id === id)[0];
+    const selectedItem = this.props.masterItemList[id];
     this.setState({
       selectedItem: selectedItem
     });
@@ -40,53 +41,70 @@ class AppControl extends React.Component {
   }
 
   handleAddingItemToList = (newItem) => {
-    const newMasterItemList = this.state.masterItemList.concat(newItem);
+    const { dispatch } = this.props;
+    const { itemName, description, price, stock, id } = newItem;
+    const action = {
+      type: "ADD_ITEM",
+      itemName: itemName,
+      description: description,
+      price: price,
+      stock: stock,
+      id: id
+    }
+    dispatch(action);
     this.setState({
-      masterItemList: newMasterItemList,
       pageName: "Restock"
     });
   }
 
   handleEditingItemInList = (updatedItem) => {
-    let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
-    const currentPosition = tempMasterItemList.findIndex(item => item.id === updatedItem.id);
-    if(currentPosition === -1){
-      console.log("ERROR: AppControl-handleEditingItemInList: Item's Id not in masterItemList");
-    }else{
-      let currentItem = updatedItem;
-      tempMasterItemList[currentPosition] = currentItem;
-      this.setState({
-        selectedItem: currentItem,
-        masterItemList: tempMasterItemList
-      });
+    const { dispatch } = this.props;
+    const { itemName, description, price, stock, id } = updatedItem;
+    const action = {
+      type: "ADD_ITEM",
+      itemName: itemName,
+      description: description,
+      price: price,
+      stock: stock,
+      id: id
     }
+    dispatch(action);
+    this.setState({
+      selectedItem: updatedItem
+    });
   }
 
   handleDeletingItemFromList = (itemId) => {
-    const newList = this.state.masterItemList.filter(item => item.id !== itemId);
+    const { dispatch } = this.props;
+    const action = {
+      type: "DELETE_ITEM",
+      id: itemId
+    }
+    dispatch(action);
     this.setState({
-      masterItemList: newList,
       selectedItem: null
     })
   }
 
-  decrementItemStock = (amountToDecrement, itemId) => {
-    let tempMasterItemList = JSON.parse(JSON.stringify(this.state.masterItemList));
-    const currentPosition = tempMasterItemList.findIndex(item => item.id === itemId);
-    if(currentPosition === -1){
-      console.log("ERROR: AppControl-decrementItemStock: Id not in masterItemList");
+  decrementItemStock = (amountToDecrement, itemId) => { //update
+    const { dispatch } = this.props;
+    const { itemName, description, price, stock, id } = this.props.masterItemList[itemId];
+    if(stock < amountToDecrement){
+      console.log("ERROR: AppControl-decrementItemStock: Not enough stock for " + itemName);
     }else{
-      let currentItem = tempMasterItemList[currentPosition];
-      if(currentItem.stock < amountToDecrement){
-        console.log("ERROR: AppControl-decrementItemStock: Not enough stock for " + currentItem.itemName);
-      }else{
-        currentItem.stock = currentItem.stock - amountToDecrement;
-        tempMasterItemList[currentPosition] = currentItem;
-        this.setState({
-          selectedItem: currentItem,
-          masterItemList: tempMasterItemList
-        });
+      const newStock = stock - amountToDecrement;
+      const action = {
+        type: "ADD_ITEM",
+        itemName: itemName,
+        description: description,
+        price: price,
+        stock: newStock,
+        id: id
       }
+      dispatch(action);
+      this.setState({
+        selectedItem: null
+      });
     }
   }
 
@@ -95,7 +113,7 @@ class AppControl extends React.Component {
     let currentlyVisibleButton = null;
     if(this.state.pageName === "Store"){
       if(this.state.selectedItem === null) {
-        currentlyVisibleState = <Store itemList={this.state.masterItemList} itemSelect={this.viewDescend}/>;
+        currentlyVisibleState = <Store itemList={this.props.masterItemList} itemSelect={this.viewDescend}/>;
         currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Restock Page"/>;
       } else {
         currentlyVisibleState = <Details item={this.state.selectedItem} buttonOrder={this.decrementItemStock}/>;
@@ -103,7 +121,7 @@ class AppControl extends React.Component {
       }
     } else if (this.state.pageName === "Restock") {
       if(this.state.selectedItem === null){
-        currentlyVisibleState = <Restock itemList={this.state.masterItemList} formFunction={this.handleAddingItemToList} itemSelect={this.viewDescend}/>;
+        currentlyVisibleState = <Restock itemList={this.props.masterItemList} formFunction={this.handleAddingItemToList} itemSelect={this.viewDescend}/>;
         currentlyVisibleButton = <CustomButton whenClicked={this.switchView} disabledState={false} buttonText="Change to Store Page" />;
       } else {
         currentlyVisibleState = <Edit item={this.state.selectedItem} editFunction={this.handleEditingItemInList} deleteFunction={this.handleDeletingItemFromList} />;
@@ -121,5 +139,17 @@ class AppControl extends React.Component {
     )
   }
 }
+
+AppControl.propTypes = {
+  masterItemList: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    masterItemList: state
+  }
+}
+
+AppControl = connect(mapStateToProps)(AppControl);
 
 export default AppControl;

@@ -6,7 +6,7 @@ import CustomButton from "./CustomButton";
 
 function Restock(props) {
   const columnCount = 2;
-  const rowCount = Math.ceil(props.itemList.length / columnCount);
+  const rowCount = Math.ceil(Object.keys(props.itemList).length / columnCount);
   const cellSpacing = "1fr ";
   const gridTwoOneStyle = {
     display: "grid",
@@ -29,7 +29,7 @@ function Restock(props) {
       <h2>Restock Page</h2>
       <div style={gridTwoOneStyle}>
         <div style={itemGridStyle}>
-          {props.itemList.map((item) =>
+          {Object.values(props.itemList).map((item) =>
             <div style={itemBoxStyle} key={item.id}>
               <Item itemName={item.itemName}
                 price={item.price}
@@ -50,7 +50,7 @@ function Restock(props) {
 }
 
 Restock.propTypes = {
-  itemList: PropTypes.array,
+  itemList: PropTypes.object,
   formFunction: PropTypes.func,
   itemSelect: PropTypes.func
 }
