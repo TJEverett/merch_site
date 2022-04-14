@@ -1,12 +1,13 @@
 # Merch Shop
 
-#### _Run a fictional Book shop, 03/31/2022_
+#### _Run a fictional Book shop, 04/14/2022_
 
 #### By _**Tristen Everett**_
 
 ## Description
 
 This project was to gain practice in building full CRUD functionality within a React page, while meeting criteria of user stories. In this project, I built a page that loads a merchandise store that is designed to sell books. It allows an "employee" to add a book into the shop's inventory with a starting price and stock; it will then show up in the store side of the page and allow a "customer" to look into a specific book's details and buy a copy if they want. The [user stories](#basic-user-stories) that were used are included below, along with a [diagram](#diagram) of the React components.
+This project was later updated as practice in adding and using Redux to act as a global store that uses reducers to allow code to update the store.
 
 ### Basic User Stories
 
@@ -28,6 +29,13 @@ This project was to gain practice in building full CRUD functionality within a R
 ## Technologies Used
 
 * [Create React App](https://github.com/facebook/create-react-app)
+* Redux
+* React-Redux
+
+### Technologies Changed
+
+* Changed to a older package.json built by Create React App to allow installation of React-Redux version that was required by lessons
+* Added Redux
 
 ### License
 
